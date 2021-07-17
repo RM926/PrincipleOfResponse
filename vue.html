@@ -1,0 +1,74 @@
+
+
+    <!-- Vue类的功能
+      负责接收初始化数据
+      负责把data中的属性注入到Vue实例中，转化成 getter/setter,这一步让我们在获取值得时候，可以少写data这个对象
+      负责调用observer监听data中所有属性的变化
+      负责调用compiler解析指令/插值表达式
+   -->
+<script src='./Watcher.js'></script>
+<script src='./Dep.js'></script>
+<script src='./Compiler.js'></script>
+<script src='./Observer.js'></script>
+<body>
+  <div id="app">
+    <h2>你是{{message}}</h2>
+    <h2>{{number}}</h2>
+    <input v-model="message">
+  </div>
+</body>
+<script>
+  class Vue{
+    constructor(options){
+      //1.通过属性保存选项的数据
+      this.$options = options || {}
+      this.$el = typeof options.el ==='string'?document.querySelector(options.el):options.el;
+      this.$data = options.data || {}
+      //2.这里的目的是为了让我们在获取值的时候可以少写一个data
+      //如：没有这个代理，应该的写法是：vm.&data.属性 ，有了这个转换，获取值的时候，只需要写vm.属性
+      this._proxyData(this.$data)
+      //3.调用Observer监听data中的所有属性
+      new Observer(this.$data)
+      //4.调用compiler对象，解析指令和插值表达式
+      new Compiler(this)
+      // new Observer(this.$data)
+    }
+    _proxyData(data){
+      //遍历data中的所有属性
+      Object.keys(data).forEach(key => {
+        //把data中的属性注入到vue实例中
+        Object.defineProperty(this,key,{
+          enumerable:true,
+          configurable:true,
+          get(){
+            console.log(data[key])
+            //在data中存储，在Vue实例本身不存储
+            return data[key]
+          },
+          set(newValue){
+            if(newValue === data[key]){
+              return 
+            }
+            data[key] = newValue
+          }
+        })
+      })
+    }
+  }
+
+  const vm = new Vue({
+    el:"#app",
+    data:{
+      message:'插值表达式',
+      number:{
+        a:{
+          b:4
+        }
+      }
+    }
+  })
+  console.log(vm)
+  // console.log(vm.$data)
+  // console.log(vm.o.p.n)
+  var c = vm.number.a.b
+</script>

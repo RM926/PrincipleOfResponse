@@ -1,0 +1,22 @@
+<div id='div'>lcontain</div>
+<script>
+  var o = {}
+  var value
+  var c = Object.defineProperty(o,'data',{
+    get(){
+      console.log('1');
+      return value
+    },
+    set(newValue){
+      new Boolean(true)
+      value = newValue
+      console.log('3')
+    }
+  })
+  o.data++// 输出1 3
+  o.data = 4 //输出3
+ x = document.getElementById('div')
+ console.dir(x)
+ var v = document.getElementById('div')
+  v = Object.getPrototypeOf(v)
+</script>

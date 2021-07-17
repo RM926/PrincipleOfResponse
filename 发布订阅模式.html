@@ -1,0 +1,47 @@
+<script>
+  //事件触发器
+  class EventEmitter{
+    constructor(){
+      this.subs = Object.create(null)
+      /*subs = {
+        eventType1:[handle1,...]
+        eventType2:[handle2,...]
+        ....
+      }
+      */
+    }
+    //注册事件
+    $on(eventType,handler){
+      //两种情况：  1.事件类型还没有，subs[eventType] = [handle]
+      //           2.事件类型有，subs[eventType].push(handle)
+      // let satuation = Object.keys(this.subs).some(sub => {
+      //     return (sub == eventType)
+      // })
+      // if(satuation){
+      //   this.subs[eventType].push(handler)
+      // }else{
+      //   this.subs[eventType] = [handler]
+      // }
+
+      // || 意思有就用第一个，没有就用第二个 
+      this.subs[eventType] = this.subs[eventType] || []
+      this.subs[eventType].push(handler) 
+    }
+    //触发事件
+    $emit(eventType){
+      if(this.subs[eventType]){
+        this.subs[eventType].forEach( handler => {
+          handler()
+        })
+      }
+    }
+  }
+  const em = new EventEmitter()
+  em.$on('click',function(){
+    console.log('click1')
+  })
+  em.$on('click',function(){
+    console.log('click2')
+  })
+  em.$emit('click')
+</script>

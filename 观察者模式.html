@@ -1,0 +1,42 @@
+<script>
+/*
+  观察者（订阅者） --Watcher
+    updata():当事件发生的时候，具体要做的事
+  目标（发布者） --Dep
+    subs数组：添加所有的观察者
+    addSub()：添加观察者
+    notify():当事件发生，调用所有观察者的 updata()方法
+  没有事件中心
+   */
+</script>
+<script>
+  //发布者--目标
+  class Dep{
+    constructor(){
+      //记录所有订阅者
+      this.subs = []
+    }
+    //添加订阅者
+    addSub(watch){
+      if(watch && watch.updata){
+        this.subs.push(watch)
+      }
+    }
+    //发布通知
+    notify(){
+      this.subs.forEach(watch =>{
+        watch.updata()
+      })
+    }
+  }
+
+  //订阅者
+  class Watch{
+    constructor(value){
+      this.value = value
+    }
+    updata(){
+
+    }
+  }
+</script>
