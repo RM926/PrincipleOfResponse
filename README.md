@@ -1,1 +1,1 @@
-# Principle-of-vue-s-response
+# Principle of vue's response
